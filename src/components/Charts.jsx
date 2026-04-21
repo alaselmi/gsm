@@ -10,69 +10,86 @@ import {
   Cell,
 } from "recharts";
 
-const lineData = [
-  { name: "Mon", users: 30 },
-  { name: "Tue", users: 45 },
-  { name: "Wed", users: 60 },
-  { name: "Thu", users: 40 },
-  { name: "Fri", users: 80 },
-  { name: "Sat", users: 65 },
-  { name: "Sun", users: 90 },
-];
+const COLORS = ["#6366F1", "#10B981", "#F59E0B"];
 
-const pieData = [
-  { name: "Admin", value: 10 },
-  { name: "User", value: 60 },
-  { name: "Technician", value: 30 },
-];
+export default function Charts({ repairs = [] }) {
+  // 🔒 حماية من undefined
 
-const COLORS = ["#3B82F6", "#10B981", "#F59E0B"];
+  const safe = Array.isArray(repairs) ? repairs : [];
 
-export default function Charts() {
+  // 📊 weekly data (fake/simple logic)
+  const weekly = [
+    { name: "Mon", value: 0 },
+    { name: "Tue", value: 0 },
+    { name: "Wed", value: 0 },
+    { name: "Thu", value: 0 },
+    { name: "Fri", value: 0 },
+    { name: "Sat", value: 0 },
+    { name: "Sun", value: 0 },
+  ];
+
+  safe.forEach((r, i) => {
+    const index = i % 7;
+    weekly[index].value += 1;
+  });
+
+  // 📊 status pie
+  const pieData = [
+    {
+      name: "Pending",
+      value: safe.filter((r) => r.status === "Pending").length,
+    },
+    {
+      name: "In Progress",
+      value: safe.filter((r) => r.status === "In Progress").length,
+    },
+    {
+      name: "Completed",
+      value: safe.filter((r) => r.status === "Completed").length,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Line Chart */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800">
-          Weekly Users
+
+      {/* LINE */}
+      <div className="bg-white rounded-2xl p-5 border shadow-sm">
+        <h3 className="font-bold mb-4 text-gray-700">
+          Weekly Activity
         </h3>
 
         <ResponsiveContainer width="100%" height={250}>
-          <LineChart data={lineData}>
+          <LineChart data={weekly}>
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Line
               type="monotone"
-              dataKey="users"
-              stroke="#3B82F6"
+              dataKey="value"
+              stroke="#6366F1"
               strokeWidth={3}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Pie Chart */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-800">
-          User Roles
+      {/* PIE */}
+      <div className="bg-white rounded-2xl p-5 border shadow-sm">
+        <h3 className="font-bold mb-4 text-gray-700">
+          Status Distribution
         </h3>
 
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
-            <Pie
-              data={pieData}
-              dataKey="value"
-              outerRadius={80}
-              label
-            >
-              {pieData.map((entry, index) => (
-                <Cell key={index} fill={COLORS[index]} />
+            <Pie data={pieData} dataKey="value" outerRadius={90}>
+              {pieData.map((_, i) => (
+                <Cell key={i} fill={COLORS[i]} />
               ))}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
       </div>
+
     </div>
   );
 }

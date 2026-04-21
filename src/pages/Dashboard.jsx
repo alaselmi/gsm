@@ -1,119 +1,77 @@
 import { Users, Wrench, DollarSign, Clock } from "lucide-react";
+import { useRepairCache } from "../context/RepairCacheContext";
 import Charts from "../components/Charts";
+import RepairCharts from "../components/charts/RepairCharts";
 export default function Dashboard() {
+  const { repairs } = useRepairCache();
+
+  const data = repairs || [];
+
   const stats = [
     {
-      title: "Total Users",
-      value: "1,234",
-      change: "+12%",
+      title: "Total Repairs",
+      value: data.length,
+      color: "bg-indigo-100 text-indigo-700",
       icon: Users,
-      color: "bg-blue-500",
     },
     {
-      title: "Active Repairs",
-      value: "56",
-      change: "+8%",
-      icon: Wrench,
-      color: "bg-yellow-500",
-    },
-    {
-      title: "Revenue",
-      value: "$12,345",
-      change: "+23%",
-      icon: DollarSign,
-      color: "bg-green-500",
-    },
-    {
-      title: "Pending Tasks",
-      value: "12",
-      change: "-4%",
+      title: "Pending",
+      value: data.filter(r => r.status === "Pending").length,
+      color: "bg-amber-100 text-amber-700",
       icon: Clock,
-      color: "bg-red-500",
+    },
+    {
+      title: "In Progress",
+      value: data.filter(r => r.status === "In Progress").length,
+      color: "bg-sky-100 text-sky-700",
+      icon: Wrench,
+    },
+    {
+      title: "Completed",
+      value: data.filter(r => r.status === "Completed").length,
+      color: "bg-emerald-100 text-emerald-700",
+      icon: DollarSign,
     },
   ];
 
   return (
     <div className="space-y-6">
-      {/* Title */}
-      <div>
-        <h1 className="text-2xl font-bold text-gray-800">
-          Welcome back 👋
-        </h1>
-        <p className="text-gray-500">
-          Here's what's happening with your GSM system today.
-        </p>
-      </div>
 
-      {/* Cards */}
-      <Charts />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => {
-          const Icon = stat.icon;
+      <h1 className="text-2xl font-bold text-gray-800">
+        Dashboard
+      </h1>
+      <RepairCharts />
+      <Charts repairs={data} />
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+        {stats.map((s, i) => {
+          const Icon = s.icon;
+
           return (
             <div
-              key={index}
-              className="bg-white/70 backdrop-blur-lg border border-gray-200 rounded-2xl shadow-sm p-5 hover:shadow-md transition"
+              key={i}
+              className="bg-white rounded-2xl border shadow-sm p-5 hover:shadow-md transition"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex justify-between items-center">
+
                 <div>
-                  <p className="text-sm text-gray-500">{stat.title}</p>
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {stat.value}
-                  </h2>
+                  <p className="text-gray-500 text-sm">{s.title}</p>
+                  <p className="text-2xl font-bold text-gray-800">
+                    {s.value}
+                  </p>
                 </div>
 
-                <div
-                  className={`p-3 rounded-xl text-white ${stat.color}`}
-                >
-                  <Icon size={20} />
+                <div className={`p-3 rounded-xl ${s.color}`}>
+                  <Icon size={18} />
                 </div>
+
               </div>
-
-              <p
-                className={`mt-4 text-sm font-medium ${
-                  stat.change.startsWith("+")
-                    ? "text-green-600"
-                    : "text-red-500"
-                }`}
-              >
-                {stat.change} from last month
-              </p>
             </div>
           );
         })}
       </div>
 
-      {/* Activity */}
-      <div className="bg-white rounded-2xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">
-          Recent Activity
-        </h3>
-
-        <div className="space-y-4">
-          {[
-            { name: "John Doe", action: "Created repair request" },
-            { name: "Jane Smith", action: "Updated user profile" },
-            { name: "Admin", action: "Deleted a repair" },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between border-b pb-3"
-            >
-              <div>
-                <p className="text-sm font-medium text-gray-800">
-                  {item.name}
-                </p>
-                <p className="text-xs text-gray-500">
-                  {item.action}
-                </p>
-              </div>
-              <span className="text-xs text-gray-400">
-                2h ago
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

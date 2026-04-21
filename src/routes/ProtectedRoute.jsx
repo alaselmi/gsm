@@ -6,8 +6,8 @@ export default function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-500">Loading...</div>
+      <div className="h-screen flex items-center justify-center">
+        Loading...
       </div>
     );
   }
@@ -17,5 +17,4 @@ export default function ProtectedRoute({ children }) {
   }
 
   return children;
-  console.log("PROTECTED ROUTE CHECK");
 }

@@ -1,0 +1,31 @@
+export const USERS = [
+  { id: 1, name: "John Doe", email: "john@test.com", role: "Admin" },
+  { id: 2, name: "Jane Smith", email: "jane@test.com", role: "User" },
+  { id: 3, name: "Ali Ahmed", email: "ali@test.com", role: "Technician" },
+  { id: 4, name: "Sami Ben", email: "sami@test.com", role: "User" },
+  { id: 5, name: "Karim", email: "karim@test.com", role: "Admin" },
+];
+
+export const REPAIRS = [
+  {
+    id: 1,
+    client: "Ahmed Ali",
+    device: "iPhone 13",
+    status: "Pending",
+    price: 120,
+  },
+  {
+    id: 2,
+    client: "Sami Ben",
+    device: "Samsung S21",
+    status: "In Progress",
+    price: 80,
+  },
+  {
+    id: 3,
+    client: "Khaled",
+    device: "MacBook Pro",
+    status: "Completed",
+    price: 200,
+  },
+];

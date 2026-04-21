@@ -1,30 +1,45 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // 🔥 Load session once on app start
+  useEffect(() => {
+    const stored = localStorage.getItem("gsm_user");
+
+    if (stored) {
+      setUser(JSON.parse(stored));
+    }
+
+    setLoading(false);
+  }, []);
+
+  // login
   const login = (email, password) => {
-    console.log("LOGIN WORKING");
-    setUser({ email });
+    const fakeUser = {
+      id: Date.now(),
+      email,
+      role: "admin",
+    };
+
+    setUser(fakeUser);
+    localStorage.setItem("gsm_user", JSON.stringify(fakeUser));
   };
 
-  const logout = () => setUser(null);
+  // logout
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("gsm_user");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-
-  if (!ctx) {
-    throw new Error("useAuth must be used inside AuthProvider");
-  }
-
-  return ctx;
-}
+export const useAuth = () => useContext(AuthContext);
