@@ -1,95 +1,94 @@
 import {
-  LineChart,
+  Cell,
   Line,
+  LineChart,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
 } from "recharts";
 
-const COLORS = ["#6366F1", "#10B981", "#F59E0B"];
+const COLORS = ["#f59e0b", "#0ea5e9", "#10b981"];
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default function Charts({ repairs = [] }) {
-  // 🔒 حماية من undefined
+  const safeRepairs = Array.isArray(repairs) ? repairs : [];
 
-  const safe = Array.isArray(repairs) ? repairs : [];
+  const weekly = DAYS.map((day) => ({ name: day, value: 0 }));
 
-  // 📊 weekly data (fake/simple logic)
-  const weekly = [
-    { name: "Mon", value: 0 },
-    { name: "Tue", value: 0 },
-    { name: "Wed", value: 0 },
-    { name: "Thu", value: 0 },
-    { name: "Fri", value: 0 },
-    { name: "Sat", value: 0 },
-    { name: "Sun", value: 0 },
-  ];
+  safeRepairs.forEach((repair) => {
+    const date = new Date(repair.createdAt);
 
-  safe.forEach((r, i) => {
-    const index = i % 7;
-    weekly[index].value += 1;
+    if (Number.isNaN(date.getTime())) {
+      return;
+    }
+
+    const dayIndex = (date.getDay() + 6) % 7;
+    weekly[dayIndex].value += 1;
   });
 
-  // 📊 status pie
   const pieData = [
     {
       name: "Pending",
-      value: safe.filter((r) => r.status === "Pending").length,
+      value: safeRepairs.filter((repair) => repair.status === "Pending").length,
     },
     {
       name: "In Progress",
-      value: safe.filter((r) => r.status === "In Progress").length,
+      value: safeRepairs.filter((repair) => repair.status === "In Progress").length,
     },
     {
       name: "Completed",
-      value: safe.filter((r) => r.status === "Completed").length,
+      value: safeRepairs.filter((repair) => repair.status === "Completed").length,
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-      {/* LINE */}
-      <div className="bg-white rounded-2xl p-5 border shadow-sm">
-        <h3 className="font-bold mb-4 text-gray-700">
+    <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 className="mb-4 text-lg font-semibold text-slate-800">
           Weekly Activity
         </h3>
 
-        <ResponsiveContainer width="100%" height={250}>
+        <ResponsiveContainer width="100%" height={260}>
           <LineChart data={weekly}>
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name" stroke="#64748b" />
+            <YAxis allowDecimals={false} stroke="#64748b" />
             <Tooltip />
             <Line
               type="monotone"
               dataKey="value"
-              stroke="#6366F1"
+              stroke="#0f172a"
               strokeWidth={3}
+              dot={{ fill: "#0f172a", r: 4 }}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
-      {/* PIE */}
-      <div className="bg-white rounded-2xl p-5 border shadow-sm">
-        <h3 className="font-bold mb-4 text-gray-700">
+      <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h3 className="mb-4 text-lg font-semibold text-slate-800">
           Status Distribution
         </h3>
 
-        <ResponsiveContainer width="100%" height={250}>
+        <ResponsiveContainer width="100%" height={260}>
           <PieChart>
-            <Pie data={pieData} dataKey="value" outerRadius={90}>
-              {pieData.map((_, i) => (
-                <Cell key={i} fill={COLORS[i]} />
+            <Pie
+              data={pieData}
+              dataKey="value"
+              nameKey="name"
+              outerRadius={92}
+              innerRadius={48}
+            >
+              {pieData.map((entry, index) => (
+                <Cell key={entry.name} fill={COLORS[index]} />
               ))}
             </Pie>
+            <Tooltip />
           </PieChart>
         </ResponsiveContainer>
       </div>
-
     </div>
   );
 }

@@ -1,9 +1,14 @@
 export default function Input({
   label,
   placeholder,
-  onChange,
   type = "text",
   color = "indigo",
+  onChange,
+  value,
+  error,
+  helpText,
+  className = "",
+  ...props
 }) {
   const colors = {
     indigo: "focus:ring-indigo-300 bg-indigo-50/30",
@@ -25,14 +30,23 @@ export default function Input({
         type={type}
         placeholder={placeholder}
         onChange={onChange}
+        value={value}
         className={`
           w-full px-4 py-2 rounded-xl
-          border border-indigo-100
+          border ${error ? "border-red-200 bg-red-50/40 focus:ring-red-200" : "border-indigo-100"}
           focus:outline-none focus:ring-2
           text-gray-700
-          ${colors[color]}
+          ${error ? "" : colors[color]}
+          ${className}
         `}
+        {...props}
       />
+
+      {error ? (
+        <p className="text-sm text-red-600">{error}</p>
+      ) : helpText ? (
+        <p className="text-sm text-gray-500">{helpText}</p>
+      ) : null}
     </div>
   );
 }

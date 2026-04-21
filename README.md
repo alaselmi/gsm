@@ -1,16 +1,65 @@
-# React + Vite
+# GSM Repair Shop Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+نظام إدارة لمحل تصليح الأجهزة، موجه لمدير المحل لمتابعة الإصلاحات اليومية من لوحة تحكم واحدة.
 
-Currently, two official plugins are available:
+## فكرة المشروع
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+هذا المشروع يساعد على:
 
-## React Compiler
+- تسجيل دخول المستخدم والاحتفاظ بالجلسة داخل `localStorage`
+- إنشاء طلبات إصلاح جديدة مع `Smart ID` مثل `21042026-01`
+- متابعة حالة كل جهاز: `Pending` و `In Progress` و `Completed`
+- حفظ سجل زمني `History / Timeline` لكل إصلاح
+- أرشفة الأجهزة المكتملة داخل صفحة `Archive`
+- تحليل أداء التقنيين والإيرادات داخل `Technician Analytics`
+- عرض إحصائيات عامة ورسوم بيانية في `Dashboard`
+- إدارة المستخدمين والعمليات من واجهة موحدة
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## الصفحات الأساسية
 
-## Expanding the ESLint configuration
+- `Login`: دخول إلى لوحة الإدارة
+- `Dashboard`: ملخص عام للإصلاحات والإيرادات والنشاط الأسبوعي
+- `Repairs`: قائمة الإصلاحات النشطة مع تحديث الحالة والبحث
+- `Create Repair`: إنشاء طلب إصلاح جديد
+- `Repair Details`: صفحة تفصيلية تحتوي على بيانات الجهاز وسجل التغييرات
+- `Archive`: عرض الإصلاحات المكتملة والبحث في السجل القديم
+- `Users`: إدارة المستخدمين بشكل واجهاتي
+- `Technician Analytics`: قياس الضغط والإنتاجية والإيراد لكل تقني
+- `Settings`: معلومات الحساب ووضع النظام الحالي
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## المميزات التقنية الحالية
+
+- مبني باستخدام `React + Vite + Tailwind CSS`
+- تنقل داخلي عبر `react-router-dom`
+- إدارة حالة مشتركة عبر `AuthContext` و `RepairCacheContext`
+- حفظ بيانات الإصلاحات داخل `localStorage`
+- توليد أرقام إصلاح ذكية تلقائيًا
+- عرض رسوم بيانية باستخدام `recharts`
+
+## تشغيل المشروع
+
+```bash
+npm install
+npm run dev
+```
+
+أوامر إضافية:
+
+```bash
+npm run build
+npm run lint
+```
+
+## ملاحظات التطوير المستقبلية
+
+المشروع جاهز للتوسعة لاحقًا نحو:
+
+- `Backend` حقيقي و `API`
+- صلاحيات وأدوار أكثر تفصيلًا
+- فواتير `PDF`
+- إدارة مخزون وقطع غيار
+- إشعارات وتقارير أكثر تقدمًا
+
+## الخلاصة
+
+هذا المشروع لم يعد مجرد واجهات React منفصلة، بل أصبح نواة نظام إدارة متكامل لمحل تصليح، يجمع بين تنظيم الطلبات، تتبع حالة الأجهزة، حفظ السجل التاريخي، وأعطاء المدير رؤية واضحة عن أداء المحل.

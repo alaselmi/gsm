@@ -2,7 +2,12 @@ export default function Select({
   label,
   options = [],
   onChange,
+  value,
   color = "emerald",
+  error,
+  helpText,
+  className = "",
+  ...props
 }) {
   const bg = {
     emerald: "bg-emerald-50/30 focus:ring-emerald-300",
@@ -20,13 +25,16 @@ export default function Select({
 
       <select
         onChange={onChange}
+        value={value}
         className={`
           w-full px-4 py-2 rounded-xl
-          border border-indigo-100
+          border ${error ? "border-red-200 bg-red-50/40 focus:ring-red-200" : "border-indigo-100"}
           focus:outline-none focus:ring-2
           text-gray-600
-          ${bg[color]}
+          ${error ? "" : bg[color]}
+          ${className}
         `}
+        {...props}
       >
         <option value="">Select...</option>
 
@@ -36,6 +44,12 @@ export default function Select({
           </option>
         ))}
       </select>
+
+      {error ? (
+        <p className="text-sm text-red-600">{error}</p>
+      ) : helpText ? (
+        <p className="text-sm text-gray-500">{helpText}</p>
+      ) : null}
 
     </div>
   );

@@ -6,26 +6,43 @@ export const USERS = [
   { id: 5, name: "Karim", email: "karim@test.com", role: "Admin" },
 ];
 
+export const TECHNICIANS = [
+  "Ali Ben",
+  "Sami Trabelsi",
+  "Youssef Hamdi",
+];
+
 export const REPAIRS = [
   {
-    id: 1,
+    id: "seed-1",
     client: "Ahmed Ali",
+    phone: "+216 20 300 400",
     device: "iPhone 13",
     status: "Pending",
     price: 120,
+    technician: "Ali Ben",
+    parts: ["Screen"],
+    notes: "Front glass cracked after a fall.",
   },
   {
-    id: 2,
+    id: "seed-2",
     client: "Sami Ben",
+    phone: "+216 21 555 210",
     device: "Samsung S21",
     status: "In Progress",
     price: 80,
+    technician: "Sami Trabelsi",
+    parts: ["Charging port"],
+    notes: "Charging issue under inspection.",
   },
   {
-    id: 3,
+    id: "seed-3",
     client: "Khaled",
     device: "MacBook Pro",
     status: "Completed",
     price: 200,
+    technician: "Youssef Hamdi",
+    parts: ["Battery", "Keyboard"],
+    notes: "Battery replaced and diagnostics completed.",
   },
 ];

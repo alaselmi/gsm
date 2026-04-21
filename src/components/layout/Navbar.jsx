@@ -1,27 +1,26 @@
-import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { useTheme } from "../context/ThemeContext";
-export default function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
-  return (
-    <button
-      onClick={toggleTheme}
-      className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-800 text-black dark:text-white transition"
-    >
-      {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-    </button>
-  );
-}
+import { useAuth } from "../../context/AuthContext";
+
 export default function Navbar() {
   const { user, logout } = useAuth();
 
   return (
-    <nav>
-      <Link to="/dashboard">Dashboard</Link>
+    <div className="flex justify-between items-center bg-slate-900 p-4 border-b border-slate-700">
+      <h1 className="text-lg font-semibold text-white">
+        Repair Shop System
+      </h1>
 
-      {user && (
-        <button onClick={logout}>Logout</button>
-      )}
-    </nav>
+      <div className="flex items-center gap-4">
+        <span className="text-slate-300 text-sm">
+          {user?.email || "User"}
+        </span>
+
+        <button
+          onClick={logout}
+          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-sm"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
   );
 }
